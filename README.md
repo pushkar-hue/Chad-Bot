@@ -32,19 +32,7 @@ The chatbot uses live search via the Serper API and responds in a Gen-Z tone. It
 **Model Output:**  
 "So basically, the sky filters vibes and blue just wins. Physics but make it aesthetic."
 
-## Installation
 
-```bash
-git clone https://github.com/pushkar-hue/Chad-Bot.git
-cd genz-llama3-chatbot
-
-# (optional) set up virtual environment
-python -m venv venv
-source venv/bin/activate  # for Linux/Mac
-venv\Scripts\activate     # for Windows
-
-pip install -r requirements.txt
-```
 
 ## Model & Weights
 
