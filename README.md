@@ -54,6 +54,6 @@ Developed by:
   GitHub: [i3hz](https://github.com/i3hz)
   
 - **Pushkar Sharma**
-  GitHub: [pushkar-hue](https://github.com/pushkar-hue)
+   GitHub: [pushkar-hue](https://github.com/pushkar-hue)
 
 
