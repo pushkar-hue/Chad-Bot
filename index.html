@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gen-Z Chad-Bot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        #chat-container::-webkit-scrollbar { width: 4px; }
+        #chat-container::-webkit-scrollbar-thumb { background-color: #4b5563; border-radius: 20px; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center h-screen p-4">
+
+    <div class="w-full max-w-2xl h-full flex flex-col bg-gray-800 rounded-2xl shadow-2xl border border-gray-700">
+        <!-- Header -->
+        <div class="p-4 border-b border-gray-700 text-center">
+            <h1 class="text-2xl font-bold">Gen-Z Chad-Bot 🤖</h1>
+            <p class="text-sm text-gray-400">Ask me anything, fam. It's giving... intelligence. ✨</p>
+            <!-- Disclaimer Added -->
+            <p class="text-xs text-gray-500 mt-2">Note: This model is fine-tuned on internet slang and may generate responses that are sarcastic, edgy, or potentially offensive.</p>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="chat-container" class="flex-1 p-4 overflow-y-auto">
+            <!-- Initial Bot Message -->
+             <div class="flex items-start gap-3 mb-4">
+                <div class="bg-indigo-500 p-1 rounded-full shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M12 8V4H8"/><rect x="4" y="12" width="16" height="8" rx="2"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M17 12v-2a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v2"/></svg></div>
+                <div class="bg-gray-700 rounded-lg p-3 max-w-xs md:max-w-md">
+                    <p class="text-sm">What's the move? Ask a question below. Toggle the search icon if you need me to check the web, fr.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-4 border-t border-gray-700">
+            <div class="flex items-center bg-gray-700 rounded-full p-2">
+                <input type="text" id="message-input" class="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none px-4" placeholder="Type your message...">
+                
+                <button id="search-toggle" class="p-2 rounded-full hover:bg-gray-600 focus:outline-none" title="Enable Web Search">
+                    <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+
+                <button id="send-button" class="ml-2 bg-indigo-500 text-white p-2 rounded-full hover:bg-indigo-600 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+            <!-- Meta Policy Notice Added -->
+            <p class="text-center text-xs text-gray-600 mt-3">Powered by Llama 3. Not for commercial use.</p>
+        </div>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const searchToggle = document.getElementById('search-toggle');
+        const searchIcon = document.getElementById('search-icon');
+
+        let useWebSearch = false;
+
+        searchToggle.addEventListener('click', () => {
+            useWebSearch = !useWebSearch;
+            searchIcon.classList.toggle('text-gray-400', !useWebSearch);
+            searchIcon.classList.toggle('text-indigo-400', useWebSearch);
+            searchToggle.classList.toggle('bg-gray-600', useWebSearch);
+            searchToggle.title = useWebSearch ? "Web Search Enabled" : "Web Search Disabled";
+        });
+
+        const sendMessage = async () => {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            addMessage(message, 'user');
+            messageInput.value = '';
+            
+            const loadingIndicator = addMessage('', 'bot', true);
+
+            const endpoint = useWebSearch ? '/search' : '/chat';
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const data = await response.json();
+                loadingIndicator.querySelector('p').textContent = data.response;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                loadingIndicator.querySelector('p').textContent = "Ayo, my circuits are fried. Try again, fam. 💀";
+            } finally {
+                loadingIndicator.querySelector('.animate-pulse')?.remove();
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        };
+
+        function addMessage(text, sender, isLoading = false) {
+            const messageWrapper = document.createElement('div');
+            const iconDiv = document.createElement('div');
+            const messageDiv = document.createElement('div');
+            const p = document.createElement('p');
+            
+            messageWrapper.className = 'flex items-start gap-3 mb-4';
+            iconDiv.className = 'p-1 rounded-full shrink-0';
+            messageDiv.className = 'rounded-lg p-3 max-w-xs md:max-w-md';
+            p.className = 'text-sm';
+            p.textContent = text; // <-- BUG FIX: Set text content for both user and bot
+
+            if (sender === 'user') {
+                messageWrapper.classList.add('justify-end');
+                iconDiv.classList.add('bg-gray-600');
+                iconDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;
+                messageDiv.classList.add('bg-indigo-500');
+                messageDiv.appendChild(p); // <-- BUG FIX: Append paragraph to message div
+                messageWrapper.appendChild(messageDiv);
+                messageWrapper.appendChild(iconDiv);
+            } else { // bot
+                iconDiv.classList.add('bg-indigo-500');
+                iconDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M12 8V4H8"/><rect x="4" y="12" width="16" height="8" rx="2"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M17 12v-2a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v2"/></svg>`;
+                messageDiv.classList.add('bg-gray-700');
+                if (isLoading) {
+                    const pulseDiv = document.createElement('div');
+                    pulseDiv.className = 'animate-pulse flex space-x-2';
+                    pulseDiv.innerHTML = `<div class="rounded-full bg-gray-500 h-2 w-2"></div><div class="rounded-full bg-gray-500 h-2 w-2"></div><div class="rounded-full bg-gray-500 h-2 w-2"></div>`;
+                    messageDiv.appendChild(pulseDiv);
+                }
+                messageDiv.appendChild(p);
+                messageWrapper.appendChild(iconDiv);
+                messageWrapper.appendChild(messageDiv);
+            }
+            
+            chatContainer.appendChild(messageWrapper);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            return messageDiv;
+        }
+
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
