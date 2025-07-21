@@ -52,7 +52,7 @@ This chatbot uses a LoRA adapter fine-tuned on top of the base `meta-llama/Meta-
 
 The adapter is available on Hugging Face:
 
-**Adapter Model:** [notninja/chad-gpt]([https://huggingface.co/pushkar-hue/llama3-genz-lora](https://huggingface.co/notninja/chad-bot))
+**Adapter Model:** [notninja/chad-gpt](https://huggingface.co/notninja/chad-bot)
 
 ## Credits
 
