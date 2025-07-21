@@ -45,6 +45,15 @@ venv\Scripts\activate     # for Windows
 
 pip install -r requirements.txt
 ```
+
+## Model & Weights
+
+This chatbot uses a LoRA adapter fine-tuned on top of the base `meta-llama/Meta-Llama-3-8B` model.
+
+The adapter is available on Hugging Face:
+
+**Adapter Model:** [notninja/chad-gpt]([https://huggingface.co/pushkar-hue/llama3-genz-lora](https://huggingface.co/notninja/chad-bot))
+
 ## Credits
 
 Developed by:
