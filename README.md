@@ -32,6 +32,10 @@ The chatbot uses live search via the Serper API and responds in a Gen-Z tone. It
 **Model Output:**  
 "So basically, the sky filters vibes and blue just wins. Physics but make it aesthetic."
 
+![WhatsApp Image 2025-07-21 at 17 54 29_b8280c00](https://github.com/user-attachments/assets/0010f524-71be-4625-bcdd-4d1b742f58ca)
+![WhatsApp Image 2025-07-21 at 17 56 59_bd5da0d8](https://github.com/user-attachments/assets/925c342f-1d89-4d9c-8a4d-ac6ac4423875)
+
+
 
 
 ## Model & Weights
